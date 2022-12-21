@@ -4,7 +4,9 @@ const videoService = require("../services/video.services");
 
 const getVideos = catchAsync(async (req, res) => {
   const title = req.query.title ? req.query.title : "";
-  const contentRating = req.query.contentRating ? req.query.contentRating : "";
+  const contentRating = req.query.contentRating
+    ? req.query.contentRating
+    : "Anyone";
   const genres = req.query.genres ? req.query.genres : ["All"];
   const sortBy = req.query.sortBy ? req.query.sortBy : "releaseDate";
 
@@ -14,7 +16,11 @@ const getVideos = catchAsync(async (req, res) => {
     genres,
     sortBy
   );
-  res.status(httpStatus.OK).send({ videos: videos });
+  if (!videos.length) {
+    res.status(httpStatus.NOT_FOUND).json({ message: "No Videos Found" });
+  } else {
+    res.status(httpStatus.OK).send({ videos: videos });
+  }
 });
 
 const getVideoById = catchAsync(async (req, res) => {

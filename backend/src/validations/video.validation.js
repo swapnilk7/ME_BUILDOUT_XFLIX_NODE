@@ -5,8 +5,8 @@ const Values = require("../utils/values");
 const searchVideos = {
   query: Joi.object().keys({
     title: Joi.string(),
-    genres: Joi.array().items(Joi.string().valid(...Values.genres, "All")),
-    contentRating: Joi.string().valid(...Values.contentRating),
+    genres: Joi.string().custom(customValidator.genres),
+    contentRating: Joi.string().custom(customValidator.contentRating),
     sortBy: Joi.string().valid(...Values.sortBy),
   }),
 };

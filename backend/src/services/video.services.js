@@ -28,13 +28,10 @@ const getVideos = async (title, contentRating, genres, sortBy) => {
 const getPossibleContentRating = (contentRating) => {
   let contentRatings = [...Values.contentRating];
 
-  if (contentRating === "Anyone" || contentRating === "") return contentRatings;
+  if (contentRating === "Anyone") return contentRatings;
 
   const contentRatingIndex = contentRatings.indexOf(contentRating);
-  const possibleContentRating = contentRatings.splice(
-    0,
-    contentRatingIndex + 1
-  );
+  const possibleContentRating = contentRatings.splice(contentRatingIndex);
 
   return possibleContentRating;
 };
@@ -98,7 +95,7 @@ const changeViews = async (id) => {
   const video = await Video.findById(id);
   if (!video) throw new ApiError(httpStatus.BAD_REQUEST, "Video Not Found");
 
-  video.views += 1;
+  video.viewCount += 1;
   await video.save();
   return;
 };
